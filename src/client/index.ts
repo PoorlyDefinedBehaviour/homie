@@ -48,7 +48,14 @@ class Client {
     if (!message.content.startsWith(this._prefix)) return;
     const token: any = Lexer.tokenize(message);
 
-    console.log(token["MessageContent"][0]);
+    const command: string = token["MessageContent"][0].replace(
+      new RegExp(`${this._prefix}`),
+      ""
+    );
+
+    const action: any = this._commands.get(command);
+
+    if (!!action) action(token);
   }
 }
 

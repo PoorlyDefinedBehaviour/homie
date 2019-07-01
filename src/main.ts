@@ -6,6 +6,6 @@ import Client from "./client";
 function main(): void {
   const bot = new Client(String(process.env.BOT_TOKEN));
   bot.prefix = "!";
-  bot.command("test", () => "hello world");
+  bot.command("test", () => console.log("hello world"));
 }
 main();
