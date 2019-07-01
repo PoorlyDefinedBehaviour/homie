@@ -1,1 +1,2 @@
-export * from "./InvalidPrefixError";
+export * from "./InvalidPrefix";
+export * from "./InvalidCommandName";

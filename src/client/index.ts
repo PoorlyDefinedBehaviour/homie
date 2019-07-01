@@ -1,6 +1,16 @@
 import * as Discord from "discord.js";
 
-import { InvalidPrefixError } from "./errors/Errors";
+import {
+  is_prefix_valid,
+  is_command_name_valid
+} from "./validators/Validators";
+
+import { InvalidPrefix, InvalidCommandName } from "./errors/Errors";
+
+interface Command {
+  name: string;
+  action: any;
+}
 
 class Client {
   private _instance: Discord.Client;
@@ -12,13 +22,12 @@ class Client {
   }
 
   public set prefix(prefix: string) {
-    if (!this.is_prefix_valid(prefix)) InvalidPrefixError.throw();
+    if (!is_prefix_valid(prefix)) InvalidPrefix.throw();
     this._prefix = prefix;
   }
 
-  private is_prefix_valid(prefix: string): boolean {
-    const trimmed_prefix: string = prefix.replace(new RegExp(" ", "g"), "");
-    return trimmed_prefix.length > 0 && trimmed_prefix.length < 4;
+  public command(command_name: string, action: any): void {
+    if (!is_command_name_valid(command_name)) InvalidCommandName.throw();
   }
 }
 
