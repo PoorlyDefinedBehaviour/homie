@@ -1,3 +1,4 @@
 export * from "./InvalidPrefix";
-export * from "./InvalidCommandName";
+export * from "./InvalidCommand";
 export * from "./InvalidAction";
+export * from "./CommandExists";
