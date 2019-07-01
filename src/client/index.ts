@@ -25,7 +25,7 @@ class Client {
     this._instance = new Discord.Client();
     this._instance.login(this.bot_token);
 
-    this._instance.on("message", this.handle_messages);
+    this._instance.on("message", message => this.handle_messages(message));
   }
 
   public set prefix(prefix: string) {
@@ -44,8 +44,11 @@ class Client {
 
   private add_listener(command: string): void {}
 
-  private handle_messages(message: Discord.Message) {
-    const tokens: Array<string> = Lexer.tokenize(message);
+  public handle_messages(message: Discord.Message) {
+    if (!message.content.startsWith(this._prefix)) return;
+    const token: any = Lexer.tokenize(message);
+
+    console.log(token["MessageContent"][0]);
   }
 }
 
