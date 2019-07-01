@@ -3,8 +3,9 @@ dotenv.config();
 
 import Client from "./client";
 
-async function main(): Promise<void> {
+function main(): void {
   const bot = new Client(String(process.env.BOT_TOKEN));
   bot.prefix = "!";
+  bot.command("test", () => "hello world");
 }
 main();
