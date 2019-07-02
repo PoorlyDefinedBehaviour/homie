@@ -1,30 +1,37 @@
 import * as Discord from "discord.js";
 
-import { Lexer } from "../Lexer/Index";
+import { load_default_commands } from "./default";
+
+import { get_command } from "./utils";
 
 import {
   is_prefix_valid,
   is_command_name_valid,
   is_action_valid,
   command_exists
-} from "./validators/Validators";
+} from "./validators";
 
 import {
   InvalidPrefix,
   InvalidCommand,
   InvalidAction,
   CommandExists
-} from "./errors/Errors";
+} from "./errors";
 
 class Client {
   private _instance: Discord.Client;
   private _prefix: string = "!";
-  private _commands: Map<string, any> = new Map<string, any>();
+  private _commands: Map<string, any>;
+  private _volume: number = 0.4;
+  private _connection: Discord.VoiceConnection | null = null;
 
   constructor(private readonly bot_token: string) {
+    console.log(this._volume, this._connection);
     this._instance = new Discord.Client();
     this._instance.login(this.bot_token);
 
+    this._commands = load_default_commands();
+    console.log(this._commands);
     this._instance.on("message", message => this.handle_messages(message));
   }
 
@@ -38,24 +45,21 @@ class Client {
     if (!is_command_name_valid(command)) InvalidCommand.throw();
     if (!is_action_valid(action)) InvalidAction.throw();
 
-    this._commands.set(command, action);
-    this.add_listener(command);
+    this._commands.set(command.toLowerCase(), action);
   }
 
-  private add_listener(command: string): void {}
-
   public handle_messages(message: Discord.Message) {
-    if (!message.content.startsWith(this._prefix)) return;
-    const token: any = Lexer.tokenize(message);
+    try {
+      if (!message.content.startsWith(this._prefix) || message.author.bot)
+        return;
 
-    const command: string = token["MessageContent"][0].replace(
-      new RegExp(`${this._prefix}`),
-      ""
-    );
+      const command: string | null = get_command(message, this._prefix);
 
-    const action: any = this._commands.get(command);
-
-    if (!!action) action(token);
+      if (command) this._commands.get(command as string)(this, message);
+    } catch (error) {
+      console.error("handle_messages", error);
+      message.reply("there was an error trying to execute that command!");
+    }
   }
 }
 
