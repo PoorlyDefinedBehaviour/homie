@@ -17,6 +17,7 @@ import {
   InvalidAction,
   CommandExists
 } from "./errors";
+import { Optional } from "./interfaces/Index";
 
 class Client {
   private _instance: Discord.Client;
@@ -53,7 +54,10 @@ class Client {
       if (!message.content.startsWith(this._prefix) || message.author.bot)
         return;
 
-      const command: string | null = get_command(message, this._prefix);
+      const { value: command }: Optional<string, null> = get_command(
+        message,
+        this._prefix
+      );
 
       if (command) this._commands.get(command as string)(this, message);
     } catch (error) {
