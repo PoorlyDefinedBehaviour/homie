@@ -15,7 +15,6 @@
     "ts-node-dev": "^1.0.0-pre.40"
   },
   "dependencies": {
-    "@favware/ytdl-prismplayer": "^2.0.0",
     "@types/ffmpeg": "^1.0.0",
     "discord.js": "^11.5.1",
     "ffmpeg": "0.0.4",
