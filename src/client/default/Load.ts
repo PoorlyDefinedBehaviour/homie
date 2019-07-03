@@ -1,7 +1,7 @@
-import * as play from "./Play";
-import * as volume from "./Volume";
+import play from "./Play";
+import volume from "./Volume";
 
-export const load_default_commands = (): Map<string, any> => {
+export default (): Map<string, any> => {
   const commands: Map<string, any> = new Map<string, any>();
 
   commands.set("play", play);
