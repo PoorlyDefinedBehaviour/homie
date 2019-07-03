@@ -6,6 +6,8 @@ import { get_command } from "./utils";
 
 import { ActionFunction } from "./types";
 
+import { Optional } from "./interfaces";
+
 import {
   is_prefix_valid,
   is_command_name_valid,
@@ -19,7 +21,6 @@ import {
   InvalidAction,
   CommandExists
 } from "./errors";
-import { Optional } from "./interfaces/Index";
 
 class Client {
   private _instance: Discord.Client;

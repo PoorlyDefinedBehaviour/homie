@@ -1,6 +1,7 @@
-export const get_args = (message: any): Array<string> | null => {
-  //Token["MessageArgs"] = message.content.split(" ");
+import { Optional } from "../interfaces";
+
+export const get_args = (message: any): Optional<Array<string>, null> => {
   const args: Array<string> = message.content.split(" ").slice(1);
 
-  return args.length > 0 ? args : null;
+  return args.length > 0 ? { value: args } : { value: null };
 };
