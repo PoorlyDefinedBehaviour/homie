@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 
-import load_default_commands from "./default/Load";
+import load_default_commands from "./commands/Load";
 
 import { get_command } from "./utils";
 
@@ -27,11 +27,9 @@ class Client {
   private _prefix: string = "!";
   private _commands: Map<string, any>;
   private _volume: number = 0.1;
-  // @ts-ignore
   private _connection: Discord.VoiceConnection | null = null;
   private _dispatcher: any = null;
-  // @ts-ignore
-  private _song_queue: Array<YoutubeURL> = [];
+  private _song_queue: Array<string> = [];
 
   constructor(private readonly bot_token: string) {
     this._instance = new Discord.Client();
@@ -40,6 +38,16 @@ class Client {
     this._commands = load_default_commands();
     console.log(this._commands);
     this._instance.on("message", message => this.handle_messages(message));
+  }
+
+  private get_similar_command(command: string): Optional<string, null> {
+    const regex = new RegExp(command, "gi");
+
+    const result: Optional<string, null> = Array.from(
+      this._commands.keys()
+    ).filter((_command: string) => regex.test(_command))[0];
+
+    return result;
   }
 
   public set prefix(prefix: string) {
@@ -66,7 +74,19 @@ class Client {
       );
 
       const action: ActionFunction = this._commands.get(command as string);
-      action(this, message);
+      if (!!action) action(this, message);
+      else {
+        const similar_command: Optional<
+          string,
+          null
+        > = this.get_similar_command(command as string);
+
+        message.reply(
+          similar_command
+            ? `Command not found, did you mean !${similar_command}?`
+            : "Type !commands to see the commands available"
+        );
+      }
     } catch (error) {
       console.error("handle_messages", error);
       message.reply("there was an error trying to execute that command!");
@@ -74,7 +94,9 @@ class Client {
   }
 
   public get_next_song(): Optional<string, null> {
-    return this._song_queue.length > 0 ? this._song_queue.shift() : null;
+    return this._song_queue.length > 0
+      ? (this._song_queue.shift() as string)
+      : null;
   }
 
   public queue_song(url: string): void {
@@ -85,6 +107,10 @@ class Client {
     this._song_queue = this._song_queue.filter(
       (youtube_url: string) => youtube_url !== url
     );
+  }
+
+  public reset_queue(): void {
+    this._song_queue = [];
   }
 
   public get how_many_songs() {
@@ -109,6 +135,10 @@ class Client {
 
   public set dispatcher(dispatcher: any) {
     this._dispatcher = dispatcher;
+  }
+
+  public get dispatcher() {
+    return this._dispatcher;
   }
 
   public set connection(connection: any) {
