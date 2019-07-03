@@ -16,16 +16,16 @@ export default async (client: any, message: Message): Promise<any> => {
     return;
   }
 
-  client._connection = await message.member.voiceChannel.join();
+  client.connection = await message.member.voiceChannel.join();
 
   const video_info: ytdl.videoInfo = await ytdl.getInfo(args[0]);
 
   message.channel.send(`Playing: ${video_info.title}`);
 
-  const dispatcher = client._connection
+  client.dispatcher = client._connection
     .playStream(await ytdl(args[0]))
     .on("end", () => console.log("song ended"))
     .on("error", (error: any) => console.error(error));
 
-  dispatcher.setVolume(client._volume);
+  client.volume = client.volume;
 };

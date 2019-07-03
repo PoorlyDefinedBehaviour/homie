@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 
-import { load_default_commands } from "./default";
+import load_default_commands from "./default/Load";
 
 import { get_command } from "./utils";
 
@@ -12,7 +12,8 @@ import {
   is_prefix_valid,
   is_command_name_valid,
   is_action_valid,
-  command_exists
+  command_exists,
+  is_volume_valid
 } from "./validators";
 
 import {
@@ -26,11 +27,12 @@ class Client {
   private _instance: Discord.Client;
   private _prefix: string = "!";
   private _commands: Map<string, any>;
-  private _volume: number = 0.4;
+  private _volume: number = 0.1;
+  // @ts-ignore
   private _connection: Discord.VoiceConnection | null = null;
+  private _dispatcher: any = null;
 
   constructor(private readonly bot_token: string) {
-    console.log(this._volume, this._connection);
     this._instance = new Discord.Client();
     this._instance.login(this.bot_token);
 
@@ -62,11 +64,42 @@ class Client {
         this._prefix
       );
 
-      if (command) this._commands.get(command as string)(this, message);
+      const action: ActionFunction = this._commands.get(command as string);
+      action(this, message);
     } catch (error) {
       console.error("handle_messages", error);
       message.reply("there was an error trying to execute that command!");
     }
+  }
+
+  public get channel_id(): Optional<number, null> {
+    return !!this._connection
+      ? {
+          value: (this._connection.channel.id as unknown) as number
+        }
+      : { value: null };
+  }
+
+  public set volume(volume: number) {
+    if (!is_volume_valid(volume)) return;
+    this._volume = volume;
+    if (this._dispatcher) this._dispatcher.setVolume(this._volume);
+  }
+
+  public get volume(): number {
+    return this._volume;
+  }
+
+  public set dispatcher(dispatcher: any) {
+    this._dispatcher = dispatcher;
+  }
+
+  public set connection(connection: any) {
+    this._connection = connection;
+  }
+
+  public get connection() {
+    return this._connection;
   }
 }
 
