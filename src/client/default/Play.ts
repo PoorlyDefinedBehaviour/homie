@@ -1,16 +1,8 @@
 import ytdl from "ytdl-core";
 import { Message } from "discord.js";
-import { get_args } from "../utils";
 import { Optional } from "../interfaces";
 
 export default async (client: any, message: Message): Promise<any> => {
-  const { value: args }: Optional<Array<string>, null> = get_args(message);
-
-  if (!args) {
-    message.channel.send("No url found");
-    return;
-  }
-
   if (!message.member.voiceChannel) {
     message.channel.send("You need to be in a voice channel");
     return;
@@ -18,14 +10,23 @@ export default async (client: any, message: Message): Promise<any> => {
 
   client.connection = await message.member.voiceChannel.join();
 
-  const video_info: ytdl.videoInfo = await ytdl.getInfo(args[0]);
+  const recursive_play = async () => {
+    const { value: song_url }: Optional<string, null> = client.get_next_song();
 
-  message.channel.send(`Playing: ${video_info.title}`);
+    if (song_url) {
+      const video_info: ytdl.videoInfo = await ytdl.getInfo(song_url);
 
-  client.dispatcher = client._connection
-    .playStream(await ytdl(args[0]))
-    .on("end", () => console.log("song ended"))
-    .on("error", (error: any) => console.error(error));
+      message.channel.send(`Playing: ${video_info.title}`);
 
-  client.volume = client.volume;
+      client.dispatcher = client.connection
+        .playStream(await ytdl(song_url))
+        .on("end", recursive_play)
+        .on("error", (error: any) => console.error(error));
+
+      client.volume = client.volume;
+    } else {
+      message.channel.send("There are no more songs to play");
+    }
+  };
+  recursive_play();
 };
