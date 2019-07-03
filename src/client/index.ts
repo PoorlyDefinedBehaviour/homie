@@ -4,9 +4,7 @@ import load_default_commands from "./default/Load";
 
 import { get_command } from "./utils";
 
-import { ActionFunction } from "./types";
-
-import { Optional } from "./interfaces";
+import { ActionFunction, Optional } from "./types";
 
 import {
   is_prefix_valid,
@@ -22,6 +20,7 @@ import {
   InvalidAction,
   CommandExists
 } from "./errors";
+import { is_url_valid } from "./validators/YoutubeURL";
 
 class Client {
   private _instance: Discord.Client;
@@ -31,6 +30,8 @@ class Client {
   // @ts-ignore
   private _connection: Discord.VoiceConnection | null = null;
   private _dispatcher: any = null;
+  // @ts-ignore
+  private _song_queue: Array<YoutubeURL> = [];
 
   constructor(private readonly bot_token: string) {
     this._instance = new Discord.Client();
@@ -59,7 +60,7 @@ class Client {
       if (!message.content.startsWith(this._prefix) || message.author.bot)
         return;
 
-      const { value: command }: Optional<string, null> = get_command(
+      const command: Optional<string, null> = get_command(
         message,
         this._prefix
       );
@@ -72,12 +73,28 @@ class Client {
     }
   }
 
+  public get_next_song(): Optional<string, null> {
+    return this._song_queue.length > 0 ? this._song_queue.shift() : null;
+  }
+
+  public queue_song(url: string): void {
+    if (is_url_valid(url)) this._song_queue.push(url);
+  }
+
+  public unqueue_song(url: string): void {
+    this._song_queue = this._song_queue.filter(
+      (youtube_url: string) => youtube_url !== url
+    );
+  }
+
+  public get how_many_songs() {
+    return this._song_queue.length;
+  }
+
   public get channel_id(): Optional<number, null> {
     return !!this._connection
-      ? {
-          value: (this._connection.channel.id as unknown) as number
-        }
-      : { value: null };
+      ? ((this._connection.channel.id as unknown) as number)
+      : null;
   }
 
   public set volume(volume: number) {

@@ -1,6 +1,6 @@
 import ytdl from "ytdl-core";
 import { Message } from "discord.js";
-import { Optional } from "../interfaces";
+import { Optional } from "../types";
 
 export default async (client: any, message: Message): Promise<any> => {
   if (!message.member.voiceChannel) {
@@ -11,7 +11,7 @@ export default async (client: any, message: Message): Promise<any> => {
   client.connection = await message.member.voiceChannel.join();
 
   const recursive_play = async () => {
-    const { value: song_url }: Optional<string, null> = client.get_next_song();
+    const song_url: Optional<string, null> = client.get_next_song();
 
     if (song_url) {
       const video_info: ytdl.videoInfo = await ytdl.getInfo(song_url);

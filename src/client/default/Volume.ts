@@ -1,10 +1,10 @@
 import { Message } from "discord.js";
 import { is_volume_valid } from "../validators";
 import { get_args } from "../utils";
-import { Optional } from "../interfaces";
+import { Optional } from "../types";
 
 export default (client: any, message: Message): void => {
-  const { value: args }: Optional<Array<string>, null> = get_args(message);
+  const args: Optional<Array<string>, null> = get_args(message);
 
   if (!args) {
     message.channel.send("No volume was provided");

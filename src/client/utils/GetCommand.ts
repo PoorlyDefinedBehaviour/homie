@@ -1,5 +1,5 @@
 import { Message as DiscordMessage } from "discord.js";
-import { Optional } from "../interfaces";
+import { Optional } from "../types";
 
 export const get_command = (
   message: DiscordMessage,
@@ -10,5 +10,5 @@ export const get_command = (
     .replace(new RegExp(`${command_prefix}`), "")
     .toLowerCase();
 
-  return command ? { value: command } : { value: null };
+  return command ? command : null;
 };
