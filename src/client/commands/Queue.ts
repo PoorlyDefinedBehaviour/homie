@@ -11,8 +11,6 @@ export default (client: any, message: Message): void => {
     return;
   }
 
-  console.log(args[0]);
-
   if (is_url_valid(args[0])) {
     client.queue_song(args[0]);
     message.reply(`There are ${client.how_many_songs} songs in the queue`);
