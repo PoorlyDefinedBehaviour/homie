@@ -4,6 +4,8 @@ import { load_default_commands } from "./default";
 
 import { get_command } from "./utils";
 
+import { ActionFunction } from "./types";
+
 import {
   is_prefix_valid,
   is_command_name_valid,
@@ -41,7 +43,7 @@ class Client {
     this._prefix = prefix;
   }
 
-  public command(command: string, action: any): void {
+  public command(command: string, action: ActionFunction): void {
     if (command_exists(this._commands, command)) CommandExists.throw();
     if (!is_command_name_valid(command)) InvalidCommand.throw();
     if (!is_action_valid(action)) InvalidAction.throw();
