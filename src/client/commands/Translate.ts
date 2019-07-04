@@ -8,17 +8,13 @@ export default (client: any, message: Message): void => {
   const args: Optional<Array<string>, null> = get_args(message);
 
   if (args) {
-    let language: string | undefined = "";
-
-    if (is_language_initials(args[0])) {
-      language = args.shift();
-    } else {
-      language = "pt";
-    }
+    const language: string = is_language_initials(args[0])
+      ? (args.shift() as string)
+      : "pt";
 
     translate(args.join(" "), { to: language }).then((result: any) => {
       message.reply(
-        `Translated from \`${result.from.language.iso}\` to \`${language}\`\n${
+        `Translation from \`${result.from.language.iso}\` to \`${language}\`\n${
           result.text
         }`
       );
