@@ -35,8 +35,6 @@ export default async (client: any, message: Message): Promise<void> => {
       `Nothing was found when searching for \`${search_terms.join(" ")}\``
     );
 
-  console.log(response);
-
   if (response.Results.length > 0) {
     message.channel.send(response.Results[0].FirstURL);
   } else {

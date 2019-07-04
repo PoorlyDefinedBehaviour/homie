@@ -28,7 +28,7 @@ class Client {
   private _prefix: string = "!";
   private _commands: Map<string, any>;
   private _volume: number = 0.1;
-  private _connection: Discord.VoiceConnection | null = null;
+  private _connection: Optional<Discord.VoiceConnection, null> = null;
   private _dispatcher: any = null;
   private _song_queue: Array<string> = [];
 
