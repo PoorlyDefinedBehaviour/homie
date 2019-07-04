@@ -12,23 +12,34 @@ interface YoutubeOptions {
 export default async (client: any, message: Message): Promise<void> => {
   const search_terms: Optional<Array<string>, null> = get_args(message);
 
-  if (search_terms) {
-    const options: YoutubeOptions = {
-      q: search_terms.join(" "),
-      part: ["id, snippet"],
-      type: "video"
-    };
+  if (!search_terms) {
+    message.reply("You need to provide something to search for");
+    return;
+  }
 
-    const videos: any = await YoutubeSearch(
-      process.env.YOUTUBE_KEY as string,
-      options
+  const options: YoutubeOptions = {
+    q: search_terms.join(" "),
+    part: ["id, snippet"],
+    type: "video"
+  };
+
+  const videos: any = await YoutubeSearch(
+    process.env.YOUTUBE_KEY as string,
+    options
+  );
+
+  if (videos) {
+    const youtube_url: string = `youtube.com/watch?v=${
+      videos.items[0].id.videoId
+    }`;
+
+    client.queue_song(youtube_url);
+    message.reply(
+      `Added: ${
+        videos.items[0].snippet.title
+      } to the queue.\nlink: ${youtube_url}`
     );
-
-    if (videos) {
-      client.queue_song(`youtube.com/watch?v=${videos.items[0].id.videoId}`);
-      message.reply(`Added: ${videos.items[0].snippet.title} to the queue.`);
-    } else {
-      message.reply("No videos were found.");
-    }
+  } else {
+    message.reply("No videos were found.");
   }
 };
