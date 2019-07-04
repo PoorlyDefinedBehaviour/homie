@@ -11,5 +11,5 @@ export default (client: any, message: Message): void => {
     return;
   }
 
-  if (is_url_valid(args[0])) client.unqueue(args[0]);
+  if (is_url_valid(args[0])) client.unqueue_song(args[0]);
 };
