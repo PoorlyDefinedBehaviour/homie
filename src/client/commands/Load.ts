@@ -1,7 +1,8 @@
 import fs from "fs";
+import { ActionFunction } from '../types';
 
-export default (): Map<string, any> => {
-  const commands: Map<string, any> = new Map<string, any>();
+export default (): Map<string, ActionFunction> => {
+  const commands: Map<string, ActionFunction> = new Map<string, any>();
 
   const file_names: Array<string> = fs
     .readdirSync(__dirname)
