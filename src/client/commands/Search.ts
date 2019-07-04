@@ -37,7 +37,7 @@ export default async (client: any, message: Message): Promise<void> => {
     message.reply(
       `Added: ${
         videos.items[0].snippet.title
-      } to the queue.\nuse !unqueue ${youtube_url} to remove it from the queue`
+      } to the queue.\nUse: \`!unqueue ${youtube_url}\` to remove it from the queue`
     );
   } else {
     message.reply("No videos were found.");
