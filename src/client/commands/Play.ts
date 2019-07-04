@@ -26,6 +26,7 @@ export default async (client: any, message: Message): Promise<any> => {
       client.volume = client.volume;
     } else {
       message.channel.send("There are no more songs to play");
+      message.member.voiceChannel.leave();
     }
   };
   recursive_play();
