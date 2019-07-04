@@ -16,12 +16,12 @@ export default async (client: any, message: Message): Promise<any> => {
     if (song_url) {
       const video_info: ytdl.videoInfo = await ytdl.getInfo(song_url);
 
-      message.channel.send(`Playing: ${video_info.title}`);
-
       client.dispatcher = client.connection
         .playStream(await ytdl(song_url))
         .on("end", recursive_play)
         .on("error", (error: any) => console.error(error));
+
+      message.channel.send(`Playing: ${video_info.title}`);
 
       client.volume = client.volume;
     } else {
