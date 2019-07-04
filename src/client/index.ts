@@ -36,7 +36,6 @@ class Client {
     this._instance.login(this.bot_token);
 
     this._commands = load_default_commands();
-    console.log(this._commands);
     this._instance.on("message", message => this.handle_messages(message));
   }
 
