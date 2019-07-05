@@ -4,7 +4,7 @@ Discord bot made for personal use.
 
 ## Installation
 
-Clone the project
+Clone the project<br/>
 Download the package manager [npm](https://www.npmjs.com)<br/>
 run npm i in the project folder<br/>
 npm install -g typescript<br/>
