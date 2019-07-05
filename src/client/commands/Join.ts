@@ -2,6 +2,11 @@ import { Message } from "discord.js";
 import { Optional } from "../types";
 
 export default async (client: any, message: Message): Promise<void> => {
+  if (!message.member.voiceChannel) {
+    message.reply("You need to be in a voice channel");
+    return;
+  }
+
   const user_channel_id: number = (message.member
     .voiceChannelID as unknown) as number;
 
