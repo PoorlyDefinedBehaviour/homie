@@ -30,10 +30,12 @@ export default async (client: any, message: Message): Promise<void> => {
     );
   });
 
-  if (!response)
+  if (!response || !response.Results[0]) {
     message.reply(
       `Nothing was found when searching for \`${search_terms.join(" ")}\``
     );
+    return;
+  }
 
   if (response.Results.length > 0) {
     message.channel.send(response.Results[0].FirstURL);
