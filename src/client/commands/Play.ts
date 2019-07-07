@@ -15,14 +15,14 @@ export default async (client: any, message: Message): Promise<any> => {
 
   client.connection = await message.member.voiceChannel.join();
 
-  const recursive_play = async () => {
+  const recursive_play = async (): Promise<void> => {
     const song_url: Optional<string, null> = client.get_next_song();
 
     if (song_url) {
       const video_info: ytdl.videoInfo = await ytdl.getInfo(song_url);
 
       client.dispatcher = client.connection
-        .playStream(await ytdl(song_url))
+        .playStream(await ytdl(song_url, { filter: "audioonly" }))
         .on("end", recursive_play)
         .on("error", (error: any) => console.error(error));
 
