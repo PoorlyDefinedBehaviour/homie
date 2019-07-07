@@ -8,6 +8,11 @@ export default async (client: any, message: Message): Promise<any> => {
     return;
   }
 
+  if (client.dispacher) {
+    message.reply("I'm already playing");
+    return;
+  }
+
   client.connection = await message.member.voiceChannel.join();
 
   const recursive_play = async () => {
