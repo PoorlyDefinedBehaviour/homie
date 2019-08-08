@@ -24,6 +24,7 @@ import {
 import { is_url_valid } from "./validators/YoutubeURL";
 
 class Client {
+  private _self: boolean;
   private _instance: Discord.Client;
   private _prefix: string = "!";
   private _commands: Map<string, any>;
@@ -32,13 +33,7 @@ class Client {
   private _dispatcher: any = null;
   private _song_queue: Array<string> = [];
 
-  constructor(private readonly bot_token: string) {
-    this._instance = new Discord.Client();
-    this._instance.login(this.bot_token);
-
-    this._commands = load_default_commands();
-    this._instance.on("message", message => this.handle_messages(message));
-  }
+  constructor(private readonly bot_token: string) {}
 
   private get_similar_command(command: string): Optional<string, null> {
     const regex = new RegExp(command, "gi");
@@ -63,10 +58,20 @@ class Client {
     this._commands.set(command.toLowerCase(), action);
   }
 
-  public handle_messages(message: Discord.Message) {
+  public start = async () => {
+    this._instance = new Discord.Client();
+    await this._instance.login(this.bot_token);
+    this._commands = load_default_commands();
+    this._self = (process.env.SELF as unknown) as boolean;
+    this._instance.on("message", message => this.handle_messages(message));
+  };
+
+  public handle_messages = async (message: Discord.Message) => {
     try {
-      if (!message.content.startsWith(this._prefix) || message.author.bot)
-        return;
+      const is_user_message: boolean =
+        message.author.discriminator === (process.env.DISCRIMINATOR as string);
+
+      if (!message.content.startsWith(this._prefix) || !is_user_message) return;
 
       const command: Optional<string, null> = get_command(
         message,
@@ -74,8 +79,11 @@ class Client {
       );
 
       const action: ActionFunction = this._commands.get(command as string);
-      if (!!action) action(this, message);
-      else {
+      if (action) {
+        action(this, message);
+      } else {
+        if (this._self) return;
+
         const similar_command: Optional<
           string,
           null
@@ -87,11 +95,13 @@ class Client {
             : "Type !commands to see the commands available"
         );
       }
+
+      await message.delete();
     } catch (error) {
       console.error("handle_messages", error);
       message.reply("there was an error trying to execute that command!");
     }
-  }
+  };
 
   public get_next_song(): Optional<string, null> {
     return this._song_queue.length > 0
