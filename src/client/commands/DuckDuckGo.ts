@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 import { Optional } from "../types";
 import { get_args } from "../utils";
 
-export default async (client: any, message: Message): Promise<void> => {
+export default async (_: any, message: Message): Promise<void> => {
   const search_terms: Optional<Array<string>, null> = get_args(message);
 
   if (!search_terms) {
@@ -30,7 +30,7 @@ export default async (client: any, message: Message): Promise<void> => {
     );
   });
 
-  if (!response || !response.Results[0]) {
+  if (!response || !response.Results) {
     message.reply(
       `Nothing was found when searching for \`${search_terms.join(" ")}\``
     );
