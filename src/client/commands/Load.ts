@@ -1,12 +1,12 @@
-import fs from "fs";
-import { ActionFunction } from '../types';
+import { readdirSync } from "fs";
+import { ActionFunction } from "../types";
 
 export default (): Map<string, ActionFunction> => {
   const commands: Map<string, ActionFunction> = new Map<string, any>();
 
-  const file_names: Array<string> = fs
-    .readdirSync(__dirname)
-    .map((command: string) => `${command.split(".")[0].toLowerCase()}`);
+  const file_names: Array<string> = readdirSync(__dirname).map(
+    (command: string) => `${command.split(".")[0].toLowerCase()}`
+  );
 
   for (const file_name of file_names) {
     if (file_name !== "load") {
