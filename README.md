@@ -16,7 +16,9 @@ Compile it with typescript
 !commands to see every command available
 
 // Commands, may be outdated.
+!eemote     // sends a bttv emote in chat
 !calculate  // calculates a mathematical expression
+!derivative // derives a function regarding x
 !duckduckgo // searchs for a specified query using duckduckgo
 !google     // searchs for a specified query using google
 !join       // brings bot to your voice channel
