@@ -16,7 +16,7 @@ Compile it with typescript
 !commands to see every command available
 
 // Commands, may be outdated.
-!eemote     // sends a bttv emote in chat
+!emote     // sends a bttv emote in chat
 !calculate  // calculates a mathematical expression
 !derivative // derives a function regarding x
 !duckduckgo // searchs for a specified query using duckduckgo
@@ -30,7 +30,7 @@ Compile it with typescript
 !resume     // resumes the song
 !volume     // changes the volume of current song
 !skip       // skips the current song
-!search     // searchs for a specified query on youtube
+!youtube     // searchs for a specified query on youtube
 !translate  // translates a specified text to a language of choice
 ```
 

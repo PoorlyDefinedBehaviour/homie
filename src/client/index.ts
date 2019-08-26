@@ -68,11 +68,6 @@ class Client {
 
   public handle_messages = async (message: Discord.Message) => {
     try {
-      const is_user_message: boolean =
-        message.author.discriminator === (process.env.DISCRIMINATOR as string);
-
-      if (!message.content.startsWith(this._prefix) || !is_user_message) return;
-
       const command: Optional<string, null> = get_command(
         message,
         this._prefix
