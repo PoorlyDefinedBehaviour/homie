@@ -2,10 +2,11 @@
   "name": "homie",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cls && node_modules/.bin/ts-node-dev --inspect -- src/main.ts"
+    "dev": "cls && node_modules/.bin/ts-node-dev --inspect -- src/main.ts",
+    "start": "node_modules/.bin/ts-node src/main.ts"
   },
   "engines": {
     "node": "10"
@@ -29,9 +30,7 @@
     "mathjs": "^6.0.2",
     "npm": "^6.10.0",
     "opusscript": "0.0.6",
-    "parcel": "^1.12.3",
     "request-promise": "^4.2.4",
-    "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3",
     "youtube-api-v3-search": "^1.2.1",
