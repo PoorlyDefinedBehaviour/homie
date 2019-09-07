@@ -1,7 +1,7 @@
 import request from "request-promise";
 import { Message } from "discord.js";
-import { Optional } from "../types";
-import { get_args } from "../utils";
+import { get_args } from "../utils/GetArgs";
+import { Optional } from "../../types/Index";
 
 export default async (_: any, message: Message): Promise<void> => {
   const search_terms: Optional<Array<string>, null> = get_args(message);
@@ -21,7 +21,7 @@ export default async (_: any, message: Message): Promise<void> => {
       num: 1,
       q: search_terms.join(" ")
     }
-  }).catch(error => {
+  }).catch((error: any) => {
     console.error(error);
     message.reply(
       `Something went wrong trying to search for \`${search_terms.join(" ")}\`.`

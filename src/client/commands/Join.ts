@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { Optional } from "../types";
+import { Optional } from "../../types/Index";
 
 export default async (client: any, message: Message): Promise<void> => {
   if (!message.member.voiceChannel) {

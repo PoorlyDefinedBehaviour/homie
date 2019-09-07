@@ -1,7 +1,7 @@
-import YoutubeSearch from "youtube-api-v3-search";
+const YoutubeSearch = require("youtube-api-v3-search");
 import { Message } from "discord.js";
-import { Optional } from "../types";
-import { get_args } from "../utils";
+import { Optional } from "../../types/Index";
+import { get_args } from "../utils/GetArgs";
 
 interface YoutubeOptions {
   q: string;
@@ -29,15 +29,11 @@ export default async (client: any, message: Message): Promise<void> => {
   );
 
   if (videos) {
-    const youtube_url: string = `youtube.com/watch?v=${
-      videos.items[0].id.videoId
-    }`;
+    const youtube_url: string = `youtube.com/watch?v=${videos.items[0].id.videoId}`;
 
     client.queue_song(youtube_url);
     message.reply(
-      `Added: ${
-        videos.items[0].snippet.title
-      } to the queue.\nUse: \`!unqueue ${youtube_url}\` to remove it from the queue`
+      `Added: ${videos.items[0].snippet.title} to the queue.\nUse: \`!unqueue ${youtube_url}\` to remove it from the queue`
     );
   } else {
     message.reply("No videos were found.");

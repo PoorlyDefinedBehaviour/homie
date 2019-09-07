@@ -1,4 +1,4 @@
-import { Optional } from "../types";
+import { Optional } from "../../types/Index";
 
 export const get_args = (message: any): Optional<Array<string>, null> => {
   const args: Array<string> = message.content.split(" ").slice(1);

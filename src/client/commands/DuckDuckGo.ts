@@ -1,7 +1,7 @@
 import request from "request-promise";
 import { Message } from "discord.js";
-import { Optional } from "../types";
-import { get_args } from "../utils";
+import { Optional } from "../../types/Index";
+import { get_args } from "../utils/GetArgs";
 
 export default async (_: any, message: Message): Promise<void> => {
   const search_terms: Optional<Array<string>, null> = get_args(message);

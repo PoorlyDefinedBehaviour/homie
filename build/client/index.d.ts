@@ -1,8 +1,7 @@
 import * as Discord from "discord.js";
-import { ActionFunction, Optional } from "./types";
+import { Optional, ActionFunction } from "./types/Index";
 declare class Client {
     private readonly bot_token;
-    private _self;
     private _instance;
     private _prefix;
     private _commands;

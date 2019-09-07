@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const request_promise_1 = __importDefault(require("request-promise"));
-const utils_1 = require("../utils");
+const GetArgs_1 = require("../utils/GetArgs");
 exports.default = async (_, message) => {
-    const search_terms = utils_1.get_args(message);
+    const search_terms = GetArgs_1.get_args(message);
     if (!search_terms) {
         message.reply("You need to provide something for me to search for.");
         return;

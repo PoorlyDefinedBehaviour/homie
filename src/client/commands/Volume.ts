@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
-import { is_volume_valid } from "../validators";
-import { get_args } from "../utils";
-import { Optional } from "../types";
+import { get_args } from "../utils/GetArgs";
+import { Optional } from "../../types/Index";
+import { is_volume_valid } from "../validators/Index";
 
 export default (client: any, message: Message): void => {
   const args: Optional<Array<string>, null> = get_args(message);

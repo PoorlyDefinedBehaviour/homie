@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const youtube_api_v3_search_1 = __importDefault(require("youtube-api-v3-search"));
-const utils_1 = require("../utils");
+const GetArgs_1 = require("../utils/GetArgs");
 exports.default = async (client, message) => {
-    const search_terms = utils_1.get_args(message);
+    const search_terms = GetArgs_1.get_args(message);
     if (!search_terms) {
         message.reply("You need to provide something to search for");
         return;

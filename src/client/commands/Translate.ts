@@ -1,8 +1,8 @@
-import translate from "@vitalets/google-translate-api";
+const translate = require("@vitalets/google-translate-api");
 import { Message } from "discord.js";
-import { Optional } from "../types";
-import { get_args } from "../utils";
 import { is_language_initials } from "../validators/Language";
+import { Optional } from "../../types/Index";
+import { get_args } from "../utils/GetArgs";
 
 export default (client: any, message: Message): void => {
   const args: Optional<Array<string>, null> = get_args(message);
@@ -14,9 +14,7 @@ export default (client: any, message: Message): void => {
 
     translate(args.join(" "), { to: language }).then((result: any) => {
       message.reply(
-        `Translation from \`${result.from.language.iso}\` to \`${language}\`\n${
-          result.text
-        }`
+        `Translation from \`${result.from.language.iso}\` to \`${language}\`\n${result.text}`
       );
     });
   } else {

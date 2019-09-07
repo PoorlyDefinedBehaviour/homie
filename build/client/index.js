@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Discord = __importStar(require("discord.js"));
 const Load_1 = __importDefault(require("./commands/Load"));
-const utils_1 = require("./utils");
-const validators_1 = require("./validators");
-const errors_1 = require("./errors");
 const YoutubeURL_1 = require("./validators/YoutubeURL");
+const Index_1 = require("./errors/Index");
+const Index_2 = require("./validators/Index");
+const GetCommand_1 = require("./utils/GetCommand");
 class Client {
     constructor(bot_token) {
         this.bot_token = bot_token;
@@ -28,19 +28,16 @@ class Client {
             this._instance = new Discord.Client();
             await this._instance.login(this.bot_token);
             this._commands = Load_1.default();
-            this._self = process.env.SELF;
             this._instance.on("message", message => this.handle_messages(message));
         };
         this.handle_messages = async (message) => {
             try {
-                const command = utils_1.get_command(message, this._prefix);
+                const command = GetCommand_1.get_command(message, this._prefix);
                 const action = this._commands.get(command);
                 if (action) {
                     action(this, message);
                 }
                 else {
-                    if (this._self)
-                        return;
                     const similar_command = this.get_similar_command(command);
                     message.reply(similar_command
                         ? `Command not found, did you mean !${similar_command}?`
@@ -60,17 +57,17 @@ class Client {
         return result;
     }
     set prefix(prefix) {
-        if (!validators_1.is_prefix_valid(prefix))
-            errors_1.InvalidPrefix.throw();
+        if (!Index_2.is_prefix_valid(prefix))
+            Index_1.InvalidPrefix.throw();
         this._prefix = prefix;
     }
     command(command, action) {
-        if (validators_1.command_exists(this._commands, command))
-            errors_1.CommandExists.throw();
-        if (!validators_1.is_command_name_valid(command))
-            errors_1.InvalidCommand.throw();
-        if (!validators_1.is_action_valid(action))
-            errors_1.InvalidAction.throw();
+        if (Index_2.command_exists(this._commands, command))
+            Index_1.CommandExists.throw();
+        if (!Index_2.is_command_name_valid(command))
+            Index_1.InvalidCommand.throw();
+        if (!Index_2.is_action_valid(action))
+            Index_1.InvalidAction.throw();
         this._commands.set(command.toLowerCase(), action);
     }
     get_next_song() {
@@ -97,7 +94,7 @@ class Client {
             : null;
     }
     set volume(volume) {
-        if (!validators_1.is_volume_valid(volume))
+        if (!Index_2.is_volume_valid(volume))
             return;
         this._volume = volume;
         if (this._dispatcher)

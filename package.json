@@ -5,8 +5,8 @@
   "main": "build/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cls && node_modules/.bin/ts-node-dev --inspect -- src/main.ts",
-    "start": "node build/main.js"
+    "dev": "clear && node_modules/.bin/ts-node-dev --inspect -- src/main.ts",
+    "start": "node_modules/.bin/ts-node src/main"
   },
   "engines": {
     "node": "10"

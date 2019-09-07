@@ -1,5 +1,5 @@
 import { Message as DiscordMessage } from "discord.js";
-import { Optional } from "../types";
+import { Optional } from "../../types/Index";
 
 export const get_command = (
   message: DiscordMessage,

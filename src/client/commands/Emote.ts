@@ -1,7 +1,6 @@
 import { readdirSync } from "fs";
 import { Message } from "discord.js";
-import { get_args } from "../utils";
-import { Optional } from "../types";
+import { Optional } from "../../types/Index";
 
 const files: Array<string> = readdirSync("./src/assets").map(
   (file: string): string => file.toLowerCase()

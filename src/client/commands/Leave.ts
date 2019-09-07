@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { Optional } from "../types";
+import { Optional } from "../../types/Index";
 
 export default (client: any, message: Message): void => {
   const user_channel_id: number = (message.member

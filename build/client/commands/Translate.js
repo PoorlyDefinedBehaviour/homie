@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const google_translate_api_1 = __importDefault(require("@vitalets/google-translate-api"));
-const utils_1 = require("../utils");
 const Language_1 = require("../validators/Language");
+const GetArgs_1 = require("../utils/GetArgs");
 exports.default = (client, message) => {
-    const args = utils_1.get_args(message);
+    const args = GetArgs_1.get_args(message);
     if (args) {
         const language = Language_1.is_language_initials(args[0])
             ? args.shift()

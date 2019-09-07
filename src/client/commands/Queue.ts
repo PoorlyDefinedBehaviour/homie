@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
-import { get_args } from "../utils";
 import { is_url_valid } from "../validators/YoutubeURL";
-import { Optional } from "../types";
+import { get_args } from "../utils/GetArgs";
+import { Optional } from "../../types/Index";
 
 export default (client: any, message: Message): void => {
   const args: Optional<Array<string>, null> = get_args(message);

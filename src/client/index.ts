@@ -2,29 +2,24 @@ import * as Discord from "discord.js";
 
 import load_default_commands from "./commands/Load";
 
-import { get_command } from "./utils";
-
-import { ActionFunction, Optional } from "./types";
-
-import {
-  is_prefix_valid,
-  is_command_name_valid,
-  is_action_valid,
-  command_exists,
-  is_volume_valid
-} from "./validators";
-
+import { is_url_valid } from "./validators/YoutubeURL";
+import { Optional, ActionFunction } from "../types/Index";
 import {
   InvalidPrefix,
+  CommandExists,
   InvalidCommand,
-  InvalidAction,
-  CommandExists
-} from "./errors";
-
-import { is_url_valid } from "./validators/YoutubeURL";
+  InvalidAction
+} from "./errors/Index";
+import {
+  is_prefix_valid,
+  command_exists,
+  is_action_valid,
+  is_command_name_valid,
+  is_volume_valid
+} from "./validators/Index";
+import { get_command } from "./utils/GetCommand";
 
 class Client {
-  private _self: boolean;
   private _instance: Discord.Client;
   private _prefix: string = "!";
   private _commands: Map<string, any>;
@@ -62,12 +57,13 @@ class Client {
     this._instance = new Discord.Client();
     await this._instance.login(this.bot_token);
     this._commands = load_default_commands();
-    this._self = (process.env.SELF as unknown) as boolean;
     this._instance.on("message", message => this.handle_messages(message));
   };
 
   public handle_messages = async (message: Discord.Message) => {
     try {
+      if (!message.content.startsWith(this._prefix)) return;
+
       const command: Optional<string, null> = get_command(
         message,
         this._prefix
@@ -77,8 +73,6 @@ class Client {
       if (action) {
         action(this, message);
       } else {
-        if (this._self) return;
-
         const similar_command: Optional<
           string,
           null
@@ -90,8 +84,6 @@ class Client {
             : "Type !commands to see the commands available"
         );
       }
-
-      await message.delete();
     } catch (error) {
       console.error("handle_messages", error);
       message.reply("there was an error trying to execute that command!");

@@ -1,6 +1,6 @@
 import ytdl from "ytdl-core";
 import { Message } from "discord.js";
-import { Optional } from "../types";
+import { Optional } from "../../types/Index";
 
 export default async (client: any, message: Message): Promise<any> => {
   if (!message.member.voiceChannel) {
