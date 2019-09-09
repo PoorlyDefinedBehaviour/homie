@@ -30,7 +30,6 @@
     "mathjs": "^6.0.2",
     "npm": "^6.10.0",
     "opusscript": "0.0.6",
-    "parcel": "^1.12.3",
     "request-promise": "^4.2.4",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3",
